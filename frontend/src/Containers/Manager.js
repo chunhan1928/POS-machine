@@ -3,10 +3,12 @@
 import { useState } from 'react'
 import { Table, Button, Menu, Layout, Breadcrumb, Space } from 'antd'
 import { ContainerOutlined, PieChartOutlined, EditOutlined, ShoppingOutlined, PropertySafetyOutlined } from "@ant-design/icons";
+import axios from '../api';
 import Title from '../Components/Title'
 import ManagerPwd from './ManagerPwd'
 import ManagerEditProduct from './ManagerEditProductMain'
 import ManagerAddProduct from './ManagerAddProductMain'
+import ManagerRevenue from './ManagerRevenue';
 
 const { Header, Sider, Content, Footer } = Layout;
 
@@ -26,7 +28,6 @@ const Manager = ({ me, data, displayStatus }) => {
   const [dataRecord, setDataRecord] = useState([]);
   const [openEditProduct, setOpenEditProduct] = useState(false);
   const handleOpenEditProduct = (record) => {
-    // console.log("record")
     setOpenEditProduct(true);
     setDataRecord(record);
   };
@@ -36,7 +37,6 @@ const Manager = ({ me, data, displayStatus }) => {
 
   const [openAddProduct, setOpenAddProduct] = useState(false);
   const handleAddEditProduct = () => {
-    // console.log("record")
     setOpenAddProduct(true);
   };
   const handleCloseAddProduct = () => {
@@ -50,7 +50,6 @@ const Manager = ({ me, data, displayStatus }) => {
     });
     */
     // 暫時資料
-    console.log(index);
     let newData = [];
     let newData1 = [];
     for (var i = 0; i < tableData.length; i++) {
@@ -61,23 +60,17 @@ const Manager = ({ me, data, displayStatus }) => {
       }
     }
     // 暫時資料
-    console.log(newData);
     setTableData(newData);
     setShowData(newData1);
-    // console.log(tableData);
   };
 
   const updateShowData = (data, catagory) => {
-    // console.log(catagory);
-    // console.log(tableData);
     let tempArray = [];
-    console.log(catagory);
     if (catagory === '全部') setShowData(data);
     else {
       for (var i = 0; i < data.length; i++) {
         if (data[i].catagory === catagory) tempArray.push(data[i]);
       }
-      // console.log(tempArray);
       setShowData(tempArray);
     }
   };
@@ -157,9 +150,9 @@ const Manager = ({ me, data, displayStatus }) => {
                       handleAddEditProduct();
                     }}> 新增商品
                     </Button>
-                    <Table columns={stockColumns} dataSource={showData} size="small" style={{ width: '100%' }} onClick={console.log("table")} />
+                    <Table columns={stockColumns} dataSource={showData} size="small" style={{ width: '100%' }}/>
                   </> : (sideTab === "營收分析") ? <>
-                    <Table columns={stockColumns} dataSource={showData} size="small" style={{ width: '100%', margin: '15px 0 0 5px' }} onClick={console.log("table")} />
+                    <ManagerRevenue/>
                   </> : <></>
                 }
               </div>

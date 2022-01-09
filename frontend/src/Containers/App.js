@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { message } from 'antd'
 import styled from 'styled-components'
+import axios from '../api';
 import Manager from './Manager'
 import Cashier from './Cashier'
 import SignIn from './signIn'
@@ -13,6 +14,7 @@ const Wrapper = styled.div`
   height: 100vh;
   width: 100vw;
   margin: auto;
+	backgroundImage: 'url(../Image/background.jpeg)'
 `
 const LOCALSTORAGE_KEY = "save-me";
 function App() {
