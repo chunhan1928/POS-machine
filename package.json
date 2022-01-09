@@ -1,0 +1,21 @@
+{
+  "name": "hw8",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "server": "cd backend && yarn server",
+    "start": "cd frontend && yarn start"
+  },
+  "devDependencies": {
+    "@angular/core": "^13.0.3"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@mui/material": "^5.2.7",
+    "http": "^0.0.1-security",
+    "styled-components": "^5.3.3",
+    "ws": "^8.3.0"
+  }
+}
