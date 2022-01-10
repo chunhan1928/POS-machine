@@ -81,7 +81,8 @@ const ManagerRevenue = () => {
         updateRevenue();
       }}> 查詢
       </Button>
-      <Table columns={revenueColumns} dataSource={showData} footer={() => '期間總淨利：' + showOverall} size="small" style={{ width: '100%' }} />
+      <Table 
+        columns={revenueColumns} dataSource={showData} footer={() => '期間總淨利：' + showOverall} size="small" style={{ width: '100%' }} />
     </>
   )
 };
