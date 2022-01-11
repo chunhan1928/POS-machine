@@ -1,8 +1,11 @@
 // 管理員介面（Revenue）
 import { useState } from 'react'
 import axios from '../api.js';
-import { Table, Button, Input, message } from 'antd'
-import { RightSquareOutlined, LeftSquareOutlined } from "@ant-design/icons";
+import { Table, Button, message } from 'antd'
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import DatePicker from "@mui/lab/DatePicker";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import TextField from "@mui/material/TextField";
 
 
 const ManagerRevenue = () => {
@@ -14,6 +17,9 @@ const ManagerRevenue = () => {
   const updateRevenue = async () => {
     if (from === '' || until === '') {
       message.error('日期不得為空');
+      return;
+    } else if (from > until) {
+      message.error('截止日期不得早於開始日期');
       return;
     }
     /*
@@ -62,26 +68,50 @@ const ManagerRevenue = () => {
 
   return (
     <>
-      <Input
-        prefix={<LeftSquareOutlined style={{ margin: 5 }} />}
-        value={from}
-        onChange={(e) => setFrom(e.target.value)}
-        placeholder="開始日期（YYYY-MM-DD）"
-        size="large" style={{ width: 260, margin: 0 }}
-      />
-      <Input
-        prefix={<RightSquareOutlined style={{ margin: 5 }} />}
-        value={until}
-        onChange={(e) => setUntil(e.target.value)}
-        placeholder="結束日期（YYYY-MM-DD）"
-        size="large" style={{ width: 260, margin: 10 }}
-      />
-      <Button type="primary" style={{ margin: 10 }} onClick={(e) => {
-        e.stopPropagation();
-        updateRevenue();
-      }}> 查詢
-      </Button>
-      <Table 
+      <div>
+        <span style={{ width: 400, margin: 10 }}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              label="開始日期"
+              value={from}
+              onChange={(v) => setFrom(v)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="standard"
+                  margin="dense"
+                  error={!from}
+                  helperText={"開始日期不得為空"}
+                />
+              )}
+            />
+          </LocalizationProvider>
+        </span>
+        <span style={{ width: 400, margin: 10 }}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              label="截止日期"
+              value={until}
+              onChange={(v) => setUntil(v)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="standard"
+                  margin="dense"
+                  error={!until}
+                  helperText={"截止日期不得為空"}
+                />
+              )}
+            />
+          </LocalizationProvider>
+        </span>
+        <Button type="primary" style={{ margin: 25 }} onClick={(e) => {
+          e.stopPropagation();
+          updateRevenue();
+        }}> 查詢
+        </Button>
+      </div>
+      <Table
         columns={revenueColumns} dataSource={showData} footer={() => '期間總淨利：' + showOverall} size="small" style={{ width: '100%' }} />
     </>
   )

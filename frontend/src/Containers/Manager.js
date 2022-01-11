@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Table, Button, Menu, Layout, Breadcrumb, Space } from 'antd'
-import { ContainerOutlined, PieChartOutlined, EditOutlined, ShoppingOutlined, PropertySafetyOutlined } from "@ant-design/icons";
+import { ContainerOutlined, PieChartOutlined, ShoppingOutlined, PropertySafetyOutlined } from "@ant-design/icons";
 import axios from '../api';
 import Title from '../Components/Title'
 import ManagerPwd from './ManagerPwd'
@@ -113,8 +113,9 @@ const Manager = ({ me, data, displayStatus }) => {
               <Menu
                 style={{ height: '100%', width: '100%', borderLeft: 0 }}
                 defaultSelectedKeys={['全部']}
+                defaultOpenKeys={['sub1']}
                 onSelect={(e) => {
-                  if (e.key === "營收分析" || e.key === "修改資訊") {
+                  if (e.key === "營收分析") {
                     setsideTab(e.key);
                     setProductClass('');
                   }
@@ -134,7 +135,6 @@ const Manager = ({ me, data, displayStatus }) => {
                   <Menu.Item key="類別三" icon={<ShoppingOutlined />} >類別三</Menu.Item>
                 </Menu.SubMenu>
                 <Menu.Item key="營收分析" icon={<PieChartOutlined />}>營收分析</Menu.Item>
-                <Menu.Item key="修改資訊" icon={<EditOutlined />}>修改資訊</Menu.Item>
               </Menu>
             </Sider>
             <Content style={{ margin: '10px 25px' }} className="site-layout-background">
@@ -144,16 +144,15 @@ const Manager = ({ me, data, displayStatus }) => {
               </Breadcrumb>
               <div>
                 {
-                  (sideTab === "庫存狀況") ? <>
-                    <Button type="primary" onClick={(e) => {
-                      e.stopPropagation();
-                      handleAddEditProduct();
-                    }}> 新增商品
-                    </Button>
-                    <Table columns={stockColumns} dataSource={showData} size="small" style={{ width: '100%' }}/>
-                  </> : (sideTab === "營收分析") ? <>
-                    <ManagerRevenue/>
-                  </> : <></>
+                  (sideTab === "庫存狀況") ?
+                    <>
+                      <Button type="primary" onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddEditProduct();
+                      }}> 新增商品
+                      </Button>
+                      <Table columns={stockColumns} dataSource={showData} size="small" style={{ width: '100%' }} />
+                    </> : <ManagerRevenue />
                 }
               </div>
             </Content>
