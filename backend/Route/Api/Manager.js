@@ -78,8 +78,9 @@ router.post('/stock/update', (req,res) => {
 router.post('/stock/new', (req,res) => {
     console.log("Add Stock");
     // get data from req
-    var name = req.body.data.name;
     var data = req.body.data;
+    var name = data.name;
+
     // var data = {name:"----",category:"tmp",price:33,cost:33,amount:33}
 
     // mongodb
@@ -189,7 +190,12 @@ router.get('/revenue', async (req,res) => {
                 console.log("changed ",resdata[index])
             }
         } )
-        res.send({result:true, revenuedata: resdata});
+
+        var total = 0;
+        for (var i = 0; i < resdata.length; i++) {
+            total = total + resdata[i].revenue;
+        }
+        res.send({result:true, revenuedata: resdata, total_revenue: total});
     }
 })
     

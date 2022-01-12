@@ -73,7 +73,14 @@ router.post('/order', async (req,res) => {
     // insert all orders to db
     let insertOrder = await myDB.collection("orders").insertMany(newEntry);
     
-   
+    // wait for all data to be retrive 
+    let data = await myDB.collection('stocks').find({}).toArray();
+    if(data == null){
+        res.send({result:false, stockdata: []});
+    }
+    else{
+        res.send({result: true, stockdata: data});
+    }
 })
 
 module.exports = router;
