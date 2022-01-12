@@ -25,7 +25,7 @@ app.get('/login', (req,res) => {
         // not found
         if (err || doc == null){
             console.log("User not found");
-            res.send({logged: false, priviledge: false, data:[]});
+            res.send({logged: false, priviledge: false, stockdata:[]});
         }
         // found, User sign in
         else{
