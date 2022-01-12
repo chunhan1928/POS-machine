@@ -1,5 +1,5 @@
 // 管理員介面（修改密碼）
-
+import axios from '../api';
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 // mui
@@ -47,13 +47,11 @@ export default function ManagerPwd({ me, open, handleCloseManagerPwd, displaySta
     }
 
     // sned msg to backend
-    /*
-    const changeSuccess = await axios.post('/manager/update_pwd', {
+    const { data: changeSuccess } = await axios.post('/manager/update_pwd', {
+      username: me,
       old_password: formData.title,
       new_password: formData.content,
     });
-    */
-    const changeSuccess = "Success"; // 暫時
 
     if (changeSuccess === "Success") {
       handleClose();

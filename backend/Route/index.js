@@ -14,12 +14,12 @@ app.use(bodyParser.json());
 app.get('/login', (req,res) => {
     console.log("Login Authentication.");
     // get user data from req
-    var username = req.body.user;
-    var password = req.body.password;
+    var username = req.query.user;
+    var password = req.query.password;
     
     // mongodb
     var myDB = mongoose.connection;
-    var query = {"name": "jtkiew0", "password": "000"};
+    var query = { "name": username, "password": password };
     // check user exist 
     myDB.collection('users').findOne(query, async function(err,doc){
         // not found
@@ -29,7 +29,7 @@ app.get('/login', (req,res) => {
         }
         // found, User sign in
         else{
-            console.log(`User ${req.body.name} sign in.`);
+            console.log(`User ${username} sign in.`);
 
             // get stock data
             let data = await myDB.collection("stocks").find({}).toArray();

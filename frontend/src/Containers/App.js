@@ -26,41 +26,14 @@ function App() {
 	const [data, setData] = useState([]);
 
 	const logIn = async () => {
-		/*
-		const { logged, priviledge, data } = await axios.get('/login', {
+		const { data: {stockdata, logged, priviledge} } = await axios.get('/login', {
 			params: {
 				user: me,
 				password: pwd,
 			},
 		});
-		*/
-		console.log("axios.get('/login', ...)");
-		// 以下是暫時的資料
-		var logged = true;
-		var priviledge = true;
-		var testData = [
-			{
-				key: 1,
-				id: 1,
-				name: 'Product1',
-				catagory: "類別一",
-				amount: 10,
-				price: 20,
-				cost: 10,
-			},
-			{
-				key: 2,
-				id: 2,
-				name: 'Product2',
-				catagory: "類別二",
-				amount: 30,
-				price: 40,
-				cost: 10,
-			},
-		];
-		setData(testData);
-		// 以上是暫時的資料
-
+		setData(stockdata);
+		
 		if (logged === true) {
 			setSignedIn(true);
 			if (priviledge === true) setIsManager(true);

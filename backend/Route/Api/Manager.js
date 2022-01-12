@@ -37,12 +37,14 @@ router.post('/update_pwd',(req,res) => {
 router.post('/stock/update', (req,res) => {
     console.log("Update Stock");
     // get data from req
-    var name = req.body.name;
     var reqdata = req.body.data;
-
+    var name = req.body.data.name;
+    var oldName = req.body.oldName;
+    // console.log(name, oldName, reqdata);
     // mongodb
     var myDB = mongoose.connection;
-    var query = {"name": "item1"};
+    var query = {"name": oldName};
+    // console.log(query);
     // var data1 = {name:"item1",category:"tmp",price:33,cost:33,amount:33}
 
     // check existance and update stock entry
@@ -52,13 +54,14 @@ router.post('/stock/update', (req,res) => {
             res.send({ result: false, stockdata:[]})
         }
         else{
-            console.log(`Update ${name}`)
+            console.log(`Update ${oldName}`)
             // wait for the entry to be update
             let tmp = await myDB.collection("stocks").findOneAndUpdate(query, {$set : {
                 name: reqdata.name, 
                 category: reqdata.category,
                 cost: reqdata.cost,
                 price: reqdata.price,
+                category: reqdata.category,
                 amount: reqdata.amount
             }}) 
 
@@ -80,7 +83,7 @@ router.post('/stock/new', (req,res) => {
     // get data from req
     var data = req.body.data;
     var name = data.name;
-
+    // console.log(data, name);
     // var data = {name:"----",category:"tmp",price:33,cost:33,amount:33}
 
     // mongodb
@@ -92,14 +95,15 @@ router.post('/stock/new', (req,res) => {
         if(doc == null){
             console.log("Add new entry.")
             const newEntry = new Stock({
-                name:data.name,
+                name: data.name,
                 category: data.category,
                 cost: data.cost,
                 price: data.price,
                 amount: data.amount
-            })
+            });
+            console.log(newEntry);
 
-            let tmp = await myDB.collection("stocks").insertOne(newEntry)
+            let tmp = await myDB.collection("stocks").insertOne(newEntry);
             myDB.collection('stocks').find({}).toArray( function(err,result){
                     if(err || result == null){
                         res.send({result:false, stockdata: []});

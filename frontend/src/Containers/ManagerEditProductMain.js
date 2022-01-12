@@ -1,5 +1,5 @@
 // 管理員介面（編輯產品）
-
+import axios from '../api';
 import { useState } from "react";
 import { Table, Space } from 'antd'
 import { message } from 'antd'
@@ -14,14 +14,12 @@ import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 
 
-const INDEX = "id";
 const NAME = "name";
-const CAT = "catagory";
+const CAT = "category";
 const AMOUNT = "amount";
 const PRICE = "price";
 const COST = "cost";
 const initialFormData = {
-  [INDEX]: '',
   [NAME]: '',
   [CAT]: '',
   [AMOUNT]: '',
@@ -55,56 +53,32 @@ const ManagerEditProduct = ({ data, open, handleCloseEditProduct, setTableData, 
     }
 
     const finalFormData = {
-      [INDEX]: formData.id,
       [NAME]: formData.name,
-      [CAT]: formData.catagory,
+      [CAT]: formData.category,
       [AMOUNT]: formData.amount,
       [PRICE]: formData.price,
       [COST]: formData.cost,
     };
-    if (formData.id === '') finalFormData.id = data.id;
     if (formData.name === '') finalFormData.name = data.name;
-    if (formData.catagory === '') finalFormData.catagory = data.catagory;
+    if (formData.category === '') finalFormData.category = data.category;
     if (formData.amount === '') finalFormData.amount = data.amount;
     if (formData.price === '') finalFormData.price = data.price;
     if (formData.cost === '') finalFormData.cost = data.cost;
     console.log(finalFormData);
+
     // send msg to backend
-    /*
-    const newData = await axios.post('/manager/stock/update', {
-      id: finalFormData.id,
+    const returnData = await axios.post('/manager/stock/update', {
+      oldName: data.name,
       data: {
         cost: finalFormData.cost,
         name: finalFormData.name,
-        catagory: finalFormData.catagory,
+        category: finalFormData.category,
         price: finalFormData.price,
         amount: finalFormData.amount,
       }
     });
-    */
-    // 以下暫時
-    var newData = [
-			{
-				key: 1,
-				id: 1,
-				name: 'Product100',
-				catagory: "類別一",
-				amount: 1000,
-				price: 2000,
-				cost: 1000,
-			},
-			{
-				key: 2,
-				id: 2,
-				name: 'Product2',
-				catagory: "類別二",
-				amount: 30,
-				price: 40,
-				cost: 10,
-			},
-		];
-    // 以上暫時
-
+    let { data: { stockdata: newData } } = returnData;
+    console.log(newData);
     if (newData !== "") {
       setTableData(newData);
       updateShowData(newData, productClass);
@@ -125,7 +99,7 @@ const ManagerEditProduct = ({ data, open, handleCloseEditProduct, setTableData, 
 
   const recordData = [
     { name: '商品名稱', index: "name", value: data.name, key: 'nameVal' },
-    { name: '商品種類', index: "catagory", value: data.catagory, key: 'catVal' },
+    { name: '商品種類', index: "category", value: data.category, key: 'catVal' },
     { name: '商品成本', index: "cost", value: data.cost, key: 'costVal' },
     { name: '商品定價', index: "price", value: data.price, key: 'priceVal' },
     { name: '商品數量', index: "amount", value: data.amount, key: 'amountVal' },

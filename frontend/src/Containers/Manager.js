@@ -43,35 +43,29 @@ const Manager = ({ me, data, displayStatus }) => {
     setOpenAddProduct(false);
   };
 
-  const handleDeleteProduct = async (index) => {
-    /*
-    var newData = await axios.delete('/manager/update_pwd', {
-      id: index,
+  const handleDeleteProduct = async (name, category) => {
+    // console.log(name, category);
+    var returnData = await axios.post('/manager/stock/delete', {
+      name: name,
     });
-    */
-    // 暫時資料
-    let newData = [];
-    let newData1 = [];
-    for (var i = 0; i < tableData.length; i++) {
-      // console.log(tableData[i].id);
-      if (parseInt(tableData[i].id) !== parseInt(index)) {
-        newData.push(tableData[i]);
-        if (tableData[i].id !== productClass) newData1.push(tableData[i]);
-      }
-    }
-    // 暫時資料
+    var { data: { stockdata: newData } } = returnData;
+    // console.log(newData, category);
     setTableData(newData);
-    setShowData(newData1);
+    setShowData(newData, category);
   };
 
-  const updateShowData = (data, catagory) => {
+  const updateShowData = (data, category) => {
     let tempArray = [];
-    if (catagory === '全部') setShowData(data);
+    // console.log(data);
+    if (!data) return;
+    else if (category === '全部') setShowData(data);
     else {
       for (var i = 0; i < data.length; i++) {
-        if (data[i].catagory === catagory) tempArray.push(data[i]);
+        // console.log(data[i])
+        if (data[i].category === category) tempArray.push(data[i]);
       }
       setShowData(tempArray);
+      // console.log(tempArray);
     }
   };
 
@@ -92,7 +86,7 @@ const Manager = ({ me, data, displayStatus }) => {
           </Button>
           <Button type="primary" onClick={(e) => {
             e.stopPropagation();
-            handleDeleteProduct(record.id, record.catagory);
+            handleDeleteProduct(record.name, record.category);
           }}>刪除</Button>
         </Space>
       ),

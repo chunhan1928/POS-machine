@@ -1,5 +1,5 @@
 // 管理員介面（新增產品）
-
+import axios from '../api';
 import { useState } from "react";
 import { Table, Space } from 'antd'
 import { message } from 'antd'
@@ -14,7 +14,7 @@ import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 
 const NAME = "name";
-const CAT = "catagory";
+const CAT = "category";
 const AMOUNT = "amount";
 const PRICE = "price";
 const COST = "cost";
@@ -63,53 +63,18 @@ const ManagerAddProduct = ({ open, handleCloseAddProduct, setTableData, updateSh
     }
     console.log(formData);
     // send msg to backend
-    /*
-    const newData = await axios.post('/manager/stock/new', {
-      data: {
-        cost: formData.cost,
-        name: formData.name,
-        catagory: formData.catagory,
-        price: formData.price,
-        amount: formData.amount,
-      }
+    const returnData = await axios.post('/manager/stock/new', {
+      data: formData
     });
-    */
 
-    // 以下暫時
-    var newData = [
-			{
-				key: 1,
-				id: 1,
-				name: 'Product1',
-				catagory: "類別一",
-				amount: 10,
-				price: 20,
-				cost: 10,
-			},
-			{
-				key: 2,
-				id: 2,
-				name: 'Product2',
-				catagory: "類別二",
-				amount: 30,
-				price: 40,
-				cost: 10,
-			},
-      {
-				key: 3,
-				id: 3,
-				name: 'Product3',
-				catagory: "類別三",
-				amount: 30,
-				price: 40,
-				cost: 10,
-			},
-		];
-    // 以上暫時
-
+    let { data: { stockdata: newData } } = returnData;
     if (newData !== "") {
+      console.log(newData);
       setTableData(newData);
-      updateShowData(newData, productClass);
+      if (updateShowData(newData, productClass) === false) {
+        message.error("產品新增錯誤");
+        return;
+      }
       handleClose();
       message.success("產品新增成功");
     }
@@ -125,7 +90,7 @@ const ManagerAddProduct = ({ open, handleCloseAddProduct, setTableData, updateSh
 
   const recordData = [
     { name: '商品名稱', index: "name", key: 'nameVal' },
-    { name: '商品種類', index: "catagory", key: 'catVal' },
+    { name: '商品種類', index: "category", key: 'catVal' },
     { name: '商品成本', index: "cost", key: 'costVal' },
     { name: '商品定價', index: "price", key: 'priceVal' },
     { name: '商品數量', index: "amount", key: 'amountVal' },
