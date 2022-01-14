@@ -1,3 +1,4 @@
+import { fontSize } from "@mui/system";
 import FoodItem from "../Components/FoodItem";
 
 const ItemList = ({data, category, handler}) => {
@@ -9,11 +10,11 @@ const ItemList = ({data, category, handler}) => {
                     key = {item.name}
                     onClick={ item.amount > 0 ? 
                         () => {handler(item.name,item.price,1)} : undefined}
-                    style={ item.amount > 0 ? 
-                        {backgroundColor: 'pink'}:{backgroundColor: 'black'}}
+                    style={item.amount > 0 ? 
+                        {opacity: '1'}:{opacity: '0.5'}}
                 >
-                    <p>{item.name}</p>
-                    <p>{item.amount}</p>
+                    <span style={{fontSize: '3vmin'}}>{item.name} {item.price}元</span>
+                    <span style={{fontSize: '2vmin'}}>剩{item.amount}份</span>
                 </FoodItem>
                 :
                 <></>

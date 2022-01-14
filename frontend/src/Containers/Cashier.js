@@ -2,7 +2,7 @@
 // TODO: 整形、改密碼功能、某些handler需要pop out
 import { Layout, Button, Menu} from 'antd';
 import Title from '../Components/Title'
-import { PropertySafetyOutlined } from "@ant-design/icons";
+import { PropertySafetyOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useEffect, useState } from 'react';
 import axios from '../api';
 
@@ -13,7 +13,7 @@ const { Header, Content, Footer } = Layout;
 const Cashier = ({me, data,logout}) => {
   const [stockdata,setStockdata] = useState(data); // all stock data
   const [categories, setCategories] = useState([]); // all categories
-  const [curCategory,setCurCategory] = useState(0); // current selected category idex on menu
+  const [curCategory,setCurCategory] = useState("主食"); // current selected category idex on menu
   const [cartItems,setCartItems] = useState([]); // the items in cart
   const [total,setTotal] = useState(0) // total price
 
@@ -22,7 +22,6 @@ const Cashier = ({me, data,logout}) => {
     let uniqueCategories = [...new Set(stockdata.map(item => item.category))]; // collect all categories from items, and use Set to remove the duplicate ones
     uniqueCategories.sort();
     setCategories([...uniqueCategories])
-    console.log("cashier", categories)
   },[stockdata]);
 
   // if cart item list is changed, total price should change too
@@ -42,7 +41,7 @@ const Cashier = ({me, data,logout}) => {
   
   // switch categories in menu
   const HandlerCategories = (newCategory) => {
-    console.log("Change category to ", categories[newCategory])
+    console.log("Change category to ", newCategory)
     setCurCategory(newCategory);
   }
 
@@ -141,45 +140,49 @@ const Cashier = ({me, data,logout}) => {
         </Header>
         <Content style={{height: '85vh', display: 'flex'}}>
             {/* left side: sum up the ordered item */}
-            <div style={{width:'30%', height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: 'white'}}>
+            <div style={{width:'30%', height: '100%', display: 'flex', flexDirection: 'column'}}>
               {/* cart item list */}
-              <div style={{height: '65%', width: '100%', fontSize: '20px', overflowY: 'scroll', backgroundColor: 'red'}}>
+              <div style={{height: '65%', width: '100%', overflowY: 'scroll', fontSize: '1.5vmax'}}>
                 {cartItems.map((item, index) => (
-                  <div style={{backgroundColor: 'blue', margin: 10}}
-                    onClick={()=>{HandlerDelete(index)}}
-                  >
-                    <h3>{item.name+"  "+item.amount+"份     "+item.price*item.amount+"元"}</h3>
+                  <div style={{display:'flex', border: '0.1vmin solid'}} onClick={()=>{HandlerDelete(index)}}>
+                    {/* <h3>{item.name+"\t\t"+item.amount+"份\t\t"+item.price*item.amount+"元"}</h3> */}
+                    <p style={{width: "33%"}} >{item.name}</p>
+                    <p style={{width: "33%"}}>{item.amount+"份"}</p>
+                    <p style={{width: "34%"}}>{item.price*item.amount+"元"}</p>
                   </div>
                 ))}
               </div>
               {/* current total price */}
-              <div style={{height: '15%', width: '95%', backgroundColor: 'orange', margin: 10}}>
-                {total}
+              <div style={{height: '15%', width: '100%', backgroundColor: '#FEC601'/* yellow */, fontSize: '5vmin', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                <ShoppingCartOutlined />總金額：{total}元
               </div>
               {/* delete order and send order */}
               <div style={{height: '20%', display: 'flex'}}>
                 {/* delete order */}
-                <div style={{width: '50%', backgroundColor: 'yellow'}}  onClick={HandelrClear}>
+                <div style={{width: '50%', backgroundColor: '#FD4521'/* red */, fontSize: '5vmin', display: 'flex', alignItems: 'center', justifyContent: 'center'}}  onClick={HandelrClear}>
                   刪除訂單
                 </div>
-                <div style={{width: '50%', backgroundColor: 'green'}} onClick={HandlerOrder}>
+                <div style={{width: '50%', backgroundColor: '#5FAD41'/* green */, fontSize: '5vmin', display: 'flex', alignItems: 'center', justifyContent: 'center'}} onClick={HandlerOrder}>
                   送出訂單
                 </div>
               </div>
             </div>
             {/* right side: menu and item */}
-            <div style={{width:'70%', height: '100%', backgroundColor: 'silver'}}>
+            <div style={{width:'70%', height: '100%', backgroundColor: '#F1D9A7' /* wheat */}}>
               {/* menu */}
-              <Menu defaultSelectedKeys="0" mode="horizontal">
-                {categories.map( (category, index) => (
+              <Menu defaultSelectedKeys="主食" mode="horizontal">
+                {/* {categories.map( (category, index) => (
                   <Menu.Item key={index} onClick={() => {HandlerCategories(index)}}>{category}</Menu.Item>
-                ))}
+                ))} */}
+                <Menu.Item key="主食" onClick={() => {HandlerCategories("主食")}}>主食</Menu.Item>
+                <Menu.Item key="副餐" onClick={() => {HandlerCategories("副餐")}}>副餐</Menu.Item>
+                <Menu.Item key="飲料" onClick={() => {HandlerCategories("飲料")}}>飲料</Menu.Item>
               </Menu>
               {/* item */}
               <div style={{display: 'inline-flex', flexWrap: 'wrap',alignContent: 'flex-start', overflowY: 'scroll', width: '100%', height: '90%'}}>
                 <ItemList 
                   data={stockdata}
-                  category={categories[curCategory]}
+                  category={curCategory}
                   handler={HandlerItem}
                 />
               </div>
