@@ -91,7 +91,10 @@ function App() {
 						displayStatus={displayStatus}
 					/>
 				) : (
-					<Cashier/>
+					<Cashier
+						me={me}
+						data={data}
+					/>
 				)
 			}
 		</Wrapper>
