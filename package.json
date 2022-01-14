@@ -5,8 +5,7 @@
   "license": "MIT",
   "scripts": {
     "server": "cd backend && yarn server",
-    "start": "cd frontend && yarn start",
-    "heroku-postbuild": "cd frontend/ && yarn install && cd ../backend && yarn install"
+    "start": "cd frontend && yarn start"
   },
   "devDependencies": {
     "@angular/core": "^13.0.3"
