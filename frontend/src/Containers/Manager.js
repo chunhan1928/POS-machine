@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Table, Button, Menu, Layout, Breadcrumb, Space } from 'antd'
-import { ContainerOutlined, PieChartOutlined, ShoppingOutlined, PropertySafetyOutlined } from "@ant-design/icons";
+import { ContainerOutlined, PieChartOutlined, ShoppingOutlined, PropertySafetyOutlined, FormOutlined } from "@ant-design/icons";
 import axios from '../api';
 import Title from '../Components/Title'
 import ManagerPwd from './ManagerPwd'
@@ -134,7 +134,7 @@ const Manager = ({ me, data, displayStatus }) => {
                   <Menu.Item key="飲料" icon={<ShoppingOutlined />} >飲料</Menu.Item>
                 </Menu.SubMenu>
                 <Menu.Item key="營收分析" icon={<PieChartOutlined />}>營收分析</Menu.Item>
-                <Menu.Item key="添加用戶" icon={<PieChartOutlined />}>添加用戶</Menu.Item>
+                <Menu.Item key="添加用戶" icon={<FormOutlined />}>添加用戶</Menu.Item>
               </Menu>
             </Sider>
             <Content style={{ margin: '10px 25px' }} className="site-layout-background">

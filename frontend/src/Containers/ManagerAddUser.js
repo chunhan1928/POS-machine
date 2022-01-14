@@ -1,112 +1,100 @@
 // 管理員介面（Revenue）
-import { useState } from 'react'
+import { useState } from 'react';
 import axios from '../api.js';
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
-import Button from '@mui/material/Button';
+import { Table, Button, message, Space } from 'antd';
+import ManagerAddUserDialog from './ManagerAddUserDialog';
+import ManagerEditUserDialog from './ManagerEditUserDialog';
+import { RedoOutlined, PlusSquareOutlined } from "@ant-design/icons";
 
-const ManagerAddUser = ({displayStatus}) => {
-    const [newUsername, setNewUsername] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    const [newPriviledge, setNewPriviledge] = useState("manager");
 
-    const HandlerCreateUser = async () => {
-        const {data: {result}} = await axios.post( '/manager/create',{
-            username: newUsername,
-            password: newPassword,
-            priviledge: newPriviledge,
-        })
-        // Success
-        if(result){
-            displayStatus({
-				type: "success",
-				msg: "註冊成功！",
-			})
-        }
-        else{
-            displayStatus({
-				type: "error",
-				msg: "註冊失敗！",
-			})
-        }
-    }
+const ManagerAddUser = () => {
 
-    const HandlerUsername = (name) => {
-        setNewUsername(name);
-    }
+	const [tableData, setTableData] = useState([]);
+	const [openAddUser, setOpenAddUser] = useState(false);
+	const [openEditUser, setOpenEditUser] = useState(false);
+	const [recordUserName, setRecordUserName] = useState('');
 
-    const HandlerPassword = (pass) => {
-        setNewPassword(pass);
-    }
+	const updateData = async () => {
+		const { data: {userdata: userdata} } = await axios.get('/manager/user');
+		console.log(userdata);
+		if (!userdata) {
+			message.error('取得資料錯誤，請再次確認輸入資料');
+			return;
+		}
+		setTableData(userdata);
+	}
 
-    const HandlerPriviledge = (privi) => {
-        setNewPriviledge(privi);
-    }
+	const handleOpenAddUser = () => {
+		setOpenAddUser(true);
+	};
+	const handleCloseAddUser = () => {
+		setOpenAddUser(false);
+	};
 
-    const priviledge = [
-        {
-            value: "manager",
-            label:"Manager",
-        },
-        {
-            value: "front",
-            label: "Waiter",
-        },
-    ]
+	const handleOpenEditUser = (name) => {
+		setOpenEditUser(true);
+		setRecordUserName(name);
+	};
+	const handleCloseEditUser = () => {
+		setOpenEditUser(false);
+	};
 
-    return (
-        <>
-             <Box
-                component="form"
-                noValidate
-                autoComplete="off"
-                >
-                <div>
-                    <TextField
-                        //   error={displayError && !formData[TITLE]}
-                        autoFocus
-                        margin="normal"
-                        label="請輸入用戶名稱"
-                        fullWidth
-                        variant="standard"
-                        value={newUsername}
-                        onChange={(e) => {HandlerUsername(e.target.value)}}
-                        helperText={"此欄位不得為空！"}
-                    />
+	const userColumns = [
+		{ title: '用戶名稱', dataIndex: 'name', key: 'userName', },
+		{ title: '用戶權限', dataIndex: 'priviledge', key: 'userPriviledge', },
+		{
+			title: '編輯', dataIndex: 'edit', key: 'edit',
+			render: (text, record) => (
+				<Space size="small">
+					<Button type="primary" onClick={(e) => {
+						e.stopPropagation();
+						handleOpenEditUser(record.name);
+					}}>修改 {record.name}
+					</Button>
+					<Button type="primary" onClick={(e) => {
+						e.stopPropagation();
+						handleDeleteUser(record.name);
+					}}>刪除</Button>
+				</Space>
+			),
+		},
+	];
 
-                    <TextField
-                        //   error={displayError && !formData[CONTENT]}
-                        margin="normal"
-                        label="請輸入用戶密碼"
-                        fullWidth
-                        variant="standard"
-                        value={newPassword}
-                        onChange={(e) => HandlerPassword(e.target.value)}
-                        helperText={"此欄位不得為空！"}
-                        multiline
-                    />
+	const handleDeleteUser = async (name) => {
+    var returnData = await axios.post('/manager/user/delete', {
+      username: name,
+    });
+    var { data: { userdata: newData } } = returnData;
+    setTableData(newData);
+  };
 
-                    <TextField
-                    //   error={displayError && !formData[CONTENT]}
-                        margin='normal'
-                        select
-                        fullWidth
-                        label="請輸入用戶權限"
-                        value={newPriviledge}
-                        onChange={(e) => HandlerPriviledge(e.target.value)}
-                    > 
-                        {priviledge.map((obj) => (
-                            <MenuItem key={obj.value} value={obj.value}>{obj.label}</MenuItem>
-                        ))}
-                    </TextField>
-                </div>
-            </Box>
-            <Button variant="contained"
-                onClick={HandlerCreateUser}
-            >Create</Button>
-        </>
-    )
+	updateData();
+	return (
+		<>
+			<Button type="primary" icon={<RedoOutlined />} style={{marginRight: 20}} onClick={(e) => {
+				e.stopPropagation();
+				updateData();
+			}}> 重新整理
+			</Button>
+			<Button type="primary" icon={<PlusSquareOutlined />} onClick={(e) => {
+				e.stopPropagation();
+				handleOpenAddUser();
+			}}> 新增用戶
+			</Button>
+			<Table columns={userColumns} dataSource={tableData} size="small" style={{ width: '100%' }} />
+			<ManagerAddUserDialog
+				open={openAddUser}
+				handleCloseAddUser={handleCloseAddUser}
+				setTableData={setTableData}
+			/>
+			<ManagerEditUserDialog
+				oldusername={recordUserName}
+				open={openEditUser}
+				handleCloseEditUser={handleCloseEditUser}
+				setTableData={setTableData}
+			/>
+		</>
+	);
 };
 
 export default ManagerAddUser;

@@ -286,7 +286,7 @@ router.post('/user/update', async (req,res) =>{
     console.log("Delete User Priviledge");
     const username = req.body.username;
     const priviledge = req.body.priviledge;
-
+    // console.log(req);
     // mongodb
     var myDB = mongoose.connection;
     var query = {name: username};
@@ -310,7 +310,9 @@ router.post('/user/update', async (req,res) =>{
 
 // DONE
 router.get('/user', async (req,res) => {
+    var myDB = mongoose.connection;
     let usrdata = await myDB.collection("users").find({}).toArray();
+    // console.log(usrdata);
     res.send({userdata: usrdata});
 })
    
