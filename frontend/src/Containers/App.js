@@ -51,6 +51,15 @@ function App() {
 			})
 		}
 	}
+
+	const logout = () => {
+		setMe('')
+		setIsManager(false)
+		setSignedIn(false)
+		setData([])
+		setPwd("")
+	}
+
 	const displayStatus = (payload) => {
 		if (payload.msg) {
 			const { type, msg } = payload;
