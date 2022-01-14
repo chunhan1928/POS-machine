@@ -17,19 +17,36 @@ router.post('/update_pwd',(req,res) => {
 
     // mongodb
     var myDB = mongoose.connection;
-    var query = {"name": username, "password": old_pwd};
-    // check user existance and update password 
-    myDB.collection('users').findOne(query, async function(err,doc){
-        // not found
+    var query = {"name": username};
+
+     // check user exist 
+     myDB.collection('users').findOne(query, function(err,doc){
+        // User not found
         if (err || doc == null){
-            console.log("Update Failed.");
+            console.log("User not found");
             res.send("Failed");
         }
         // found
         else{
-            console.log(`Update User ${req.body.name} password.`);
-            let tmp = await myDB.collection("users").findOneAndUpdate(query,{$set:{password: new_pwd}});
-            res.send("Success")
+
+            // check old password
+            bcrypt.compare(old_pwd, doc.password, async function(err, result){
+                // Success, password match 
+                if(result){
+                    console.log(`Pwd match.`);
+                    bcrypt.genSalt(saltRounds, function(err,salt){
+                        bcrypt.hash(new_pwd,salt, async function(err,hash){
+                            await myDB.collection("users").findOneAndUpdate({name:username}, {$set:{password: hash}})
+                            res.send("Success")
+                        })
+                    })
+                }
+                // Authentication failed
+                else{
+                    console.log("not match")
+                    res.send("Failed")
+                }
+            })  
         }
     })
 })
@@ -216,10 +233,10 @@ router.post('/create', async  (req,res)=>{
     // mongodb
     var myDB = mongoose.connection;
     var query = {name: username};
-    // get orders between interval
+
     let exist = await myDB.collection("users").find(query).toArray();
     console.log(exist)
-    if(exist == []){
+    if(exist != []){
         console.log("User existed")
         res.send({result:false});
     }
