@@ -60,7 +60,7 @@ router.post('/order', async (req,res) => {
             price: stock.price,
             amount: item.amount
         })
-        
+        console.log(new Date(date));
         // kept Order entry 
         newEntry.push(entry);   
  

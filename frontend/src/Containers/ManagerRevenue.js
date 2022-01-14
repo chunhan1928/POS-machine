@@ -22,39 +22,38 @@ const ManagerRevenue = () => {
       message.error('截止日期不得早於開始日期');
       return;
     }
-    /*
-    const { response } = await axios.get('/manager/revenue', {
+
+    const { data: { result: result, revenuedata: responseData, total_revenue: overall_profit} } = await axios.get('/manager/revenue', {
       params: {
-        from: from,
-        until: until,
+        from: new Date(from),
+        until: new Date(until),
       },
     });
-    */
-    // 以下為暫時資料
-    var response = {
-      data: [
-        { name: 'P1', amount: 100, totol_cost: 800, totol_income: 1000, totol_profit: 200 },
-        { name: 'P2', amount: 76, totol_cost: 860, totol_income: 1560, totol_profit: 287 },
-        { name: 'P3', amount: 500, totol_cost: 7900, totol_income: 8900, totol_profit: 345 },
-      ],
-      overall_profit: 5670,
+    console.log(result);
+    console.log(responseData);
+    if (result === false) {
+      message.error('取得資料錯誤，請再次確認輸入資料');
+      return;
     }
-    // 以上為暫時資料
-    var newData = [];
-    for (var i = 0; i < response.data.length; i++) {
+    else if (!responseData) {
+      message.error('無資料');
+      return;
+    }
+    let newData = [];
+    for (var i = 0; i < responseData.length; i++) {
       var temp = {
         key: i,
-        name: response.data[i].name,
-        amount: response.data[i].amount,
-        cost: response.data[i].totol_cost,
-        income: response.data[i].totol_income,
-        profit: response.data[i].totol_profit,
+        name: responseData[i].name,
+        amount: responseData[i].amount,
+        cost: responseData[i].cost,
+        income: responseData[i].price,
+        profit: responseData[i].revenue,
       }
       newData.push(temp);
     }
     console.log(newData);
     setShowData(newData);
-    setShowOverall(response.overall_profit);
+    setShowOverall(overall_profit);
   };
 
   const revenueColumns = [

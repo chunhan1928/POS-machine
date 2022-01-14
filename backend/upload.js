@@ -10,14 +10,14 @@ const orderExample = [
 const stockExample = [
     // {name: "", category: "", cost: 0, price: 0, amount: 0}
     {name: "珍奶", category: "飲料", cost: 30, price: 60, amount: 7},
-    {name: "滷肉飯", category: "飯", cost: 15, price: 30, amount: 30},
-    {name: "滷蛋", category: "小菜", cost: 5, price: 15, amount: 3},
-    {name: "魯菜盤", category: "小菜", cost: 20, price: 50, amount: 30},
-    {name: "燙青菜", category: "小菜", cost: 20, price: 30, amount: 25},
-    {name: "大魯麵", category: "麵", cost: 40, price: 65, amount: 77},
-    {name: "嘴邊肉", category: "小菜", cost: 40, price: 75, amount: 4},
-    {name: "荷包蛋", category: "小菜", cost: 7, price: 15, amount: 50},
-    {name: "炒飯", category: "飯", cost: 45, price: 70, amount: 24}
+    {name: "滷肉飯", category: "主食", cost: 15, price: 30, amount: 30},
+    {name: "滷蛋", category: "副餐", cost: 5, price: 15, amount: 3},
+    {name: "魯菜盤", category: "副餐", cost: 20, price: 50, amount: 30},
+    {name: "燙青菜", category: "副餐", cost: 20, price: 30, amount: 25},
+    {name: "大魯麵", category: "主食", cost: 40, price: 65, amount: 77},
+    {name: "嘴邊肉", category: "副餐", cost: 40, price: 75, amount: 4},
+    {name: "荷包蛋", category: "副餐", cost: 7, price: 15, amount: 50},
+    {name: "炒飯", category: "主食", cost: 45, price: 70, amount: 24}
 ]
 const userExample = [
     // {name: "", password: "", priviledge: ""}

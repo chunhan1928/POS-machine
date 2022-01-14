@@ -124,9 +124,9 @@ const Manager = ({ me, data, displayStatus }) => {
               >
                 <Menu.SubMenu key="sub1" icon={<ContainerOutlined />} title="庫存狀況">
                   <Menu.Item key="全部" icon={<ShoppingOutlined />} >全部</Menu.Item>
-                  <Menu.Item key="類別一" icon={<ShoppingOutlined />} >類別一</Menu.Item>
-                  <Menu.Item key="類別二" icon={<ShoppingOutlined />} >類別二</Menu.Item>
-                  <Menu.Item key="類別三" icon={<ShoppingOutlined />} >類別三</Menu.Item>
+                  <Menu.Item key="主食" icon={<ShoppingOutlined />} >主食</Menu.Item>
+                  <Menu.Item key="副餐" icon={<ShoppingOutlined />} >副餐</Menu.Item>
+                  <Menu.Item key="飲料" icon={<ShoppingOutlined />} >飲料</Menu.Item>
                 </Menu.SubMenu>
                 <Menu.Item key="營收分析" icon={<PieChartOutlined />}>營收分析</Menu.Item>
               </Menu>

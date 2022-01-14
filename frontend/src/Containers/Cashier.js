@@ -141,11 +141,11 @@ const Cashier = ({me, data}) => {
         </Header>
         <Content style={{height: '85vh', display: 'flex'}}>
             {/* left side: sum up the ordered item */}
-            <div style={{width:'30%', height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: 'blue'}}>
+            <div style={{width:'30%', height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: 'white'}}>
               {/* cart item list */}
               <div style={{height: '65%', width: '100%', fontSize: '20px', overflowY: 'scroll', backgroundColor: 'red'}}>
                 {cartItems.map((item, index) => (
-                  <div style={{backgroundColor: 'blue'}}
+                  <div style={{backgroundColor: 'blue', margin: 10}}
                     onClick={()=>{HandlerDelete(index)}}
                   >
                     <h3>{item.name+"  "+item.amount+"份     "+item.price*item.amount+"元"}</h3>
@@ -153,7 +153,7 @@ const Cashier = ({me, data}) => {
                 ))}
               </div>
               {/* current total price */}
-              <div style={{height: '15%', width: '100%', backgroundColor: 'orange'}}>
+              <div style={{height: '15%', width: '95%', backgroundColor: 'orange', margin: 10}}>
                 {total}
               </div>
               {/* delete order and send order */}

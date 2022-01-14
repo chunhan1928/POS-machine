@@ -155,17 +155,18 @@ router.get('/revenue', async (req,res) => {
     console.log("Revenue");
     // const from = req.body.from;
     // const to = req.body.to;    
-    const from = req.body.from;
-    const to = req.body.to;
+    const from = req.query.from;
+    const to = req.query.until;
 
     // mongodb
     var myDB = mongoose.connection;
     var query = {"date": {$gte: new Date(from), $lte: new Date(to)}};
+    console.log(query);
     // get orders between interval
     let orders = await myDB.collection("orders").find(query).toArray();
-
+    console.log(orders);
     // no order in given interval
-    if(orders == []){
+    if(orders === []){
         res.send({result:false, revenuedata: []});
     }
     // process order data
@@ -199,6 +200,7 @@ router.get('/revenue', async (req,res) => {
         for (var i = 0; i < resdata.length; i++) {
             total = total + resdata[i].revenue;
         }
+        console.log(resdata);
         res.send({result:true, revenuedata: resdata, total_revenue: total});
     }
 })
