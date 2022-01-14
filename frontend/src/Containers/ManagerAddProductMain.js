@@ -20,7 +20,7 @@ const PRICE = "price";
 const COST = "cost";
 const initialFormData = {
   [NAME]: '',
-  [CAT]: '類別一',
+  [CAT]: '主食',
   [AMOUNT]: '',
   [PRICE]: '',
   [COST]: '',
@@ -118,9 +118,9 @@ const ManagerAddProduct = ({ open, handleCloseAddProduct, setTableData, updateSh
               value={formData[record.index]}
               onChange={(e) => handleChangeFormData(record.index, e.target.value)}
             >
-              <option value="類別一">類別一</option>
-              <option value="類別二">類別二</option>
-              <option value="類別三">類別三</option>
+              <option value="主食">主食</option>
+              <option value="副餐">副餐</option>
+              <option value="飲料">飲料</option>
             </NativeSelect>
           </FormControl>
       ),
