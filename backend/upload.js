@@ -1,6 +1,7 @@
 import orderModel from "./Schema/Order";
 import stockModel from "./Schema/Stock";
 import userModel from "./Schema/User";
+import bcrypt from "bcrypt"
 
 const orderExample = [
     // {date: Date(), name: "", cost: 0, price: 0, amount: 0}
@@ -30,19 +31,27 @@ const dataInit = async () => {
     const checkOrder = await orderModel.find();
     const checkStock = await stockModel.find();
     const checkUser = await userModel.find();
-    if (checkOrder.length !== 2 && process.env.TEST === "true") {
+    if (/*checkOrder.length !== 2 &&*/ process.env.TEST === "true") {
         await orderModel.deleteMany({});
         await orderModel.insertMany(orderExample);
         console.log("order database initialized!");
     }
-    if(checkStock.length !== 9 && process.env.TEST === "true") {
+    if(/*checkStock.length !== 9 &&*/ process.env.TEST === "true") {
         await stockModel.deleteMany({});
         await stockModel.insertMany(stockExample);
         console.log("stock database initialized!");
     }
-    if(checkUser.length !== 3 && process.env.TEST === "true") {
+    if(/*checkUser.length !== 3 &&*/ process.env.TEST === "true") {
         await userModel.deleteMany({});
-        await userModel.insertMany(userExample);
+        var saltRounds = 10;
+        userExample.map( (user, i) => { 
+            bcrypt.genSalt(saltRounds, function(err,salt){
+                bcrypt.hash(user.password, salt, function(err, hash){
+                    user.password = hash;
+                    userModel.create(user);
+                })
+            })
+        })
         console.log("user database initialized!");
     }
 };
