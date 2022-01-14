@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import Order from '../../Schema/Order'
 import User from '../../Schema/User'
 import Stock from '../../Schema/Stock'
+import bcrypt from 'bcrypt'
 
 const router = express.Router();
 
@@ -203,6 +204,36 @@ router.get('/revenue', async (req,res) => {
         console.log(resdata);
         res.send({result:true, revenuedata: resdata, total_revenue: total});
     }
+})
+
+// DONE
+router.post('/create', async  (req,res)=>{
+    console.log("Create User");
+    const username = req.body.username;
+    const password = req.body.password;
+    const priviledge = req.body.priviledge;
+
+    // mongodb
+    var myDB = mongoose.connection;
+    var query = {name: username};
+    // get orders between interval
+    let exist = await myDB.collection("users").find(query).toArray();
+    console.log(exist)
+    if(exist == []){
+        console.log("User existed")
+        res.send({result:false});
+    }
+    else{
+        console.log(`create user ${username}`)
+        const saltRounds = 10;
+        bcrypt.genSalt(saltRounds, function(err,salt){
+            bcrypt.hash(password,salt, async function(err,hash){
+                await myDB.collection("users").insertOne({name:username, password: hash, priviledge: priviledge})
+                res.send({result: true})
+            })
+        })
+    }
+
 })
     
 
