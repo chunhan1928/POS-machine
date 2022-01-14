@@ -113,6 +113,10 @@ const Manager = ({ me, data, displayStatus }) => {
                     setsideTab(e.key);
                     setProductClass('');
                   }
+                  else if(e.key === "添加用戶"){
+                    setsideTab(e.key);
+                    setProductClass('');
+                  }
                   else {
                     console.log(e.key);
                     setsideTab('庫存狀況');
@@ -146,7 +150,8 @@ const Manager = ({ me, data, displayStatus }) => {
                       }}> 新增商品
                       </Button>
                       <Table columns={stockColumns} dataSource={showData} size="small" style={{ width: '100%' }} />
-                    </> : <ManagerRevenue />
+                    </> : (sideTab === "營收分析") ? <ManagerRevenue />: <ManagerAddUser displayStatus={displayStatus}/>
+
                 }
               </div>
             </Content>
