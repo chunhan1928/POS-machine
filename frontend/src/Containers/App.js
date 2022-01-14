@@ -103,6 +103,7 @@ function App() {
 					<Cashier
 						me={me}
 						data={data}
+						logout={logout}
 					/>
 				)
 			}

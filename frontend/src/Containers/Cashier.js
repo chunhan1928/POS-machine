@@ -10,7 +10,7 @@ import ItemList from './ItemList';
 
 const { Header, Content, Footer } = Layout;
 
-const Cashier = ({me, data}) => {
+const Cashier = ({me, data,logout}) => {
   const [stockdata,setStockdata] = useState(data); // all stock data
   const [categories, setCategories] = useState([]); // all categories
   const [curCategory,setCurCategory] = useState(0); // current selected category idex on menu
@@ -136,7 +136,7 @@ const Cashier = ({me, data}) => {
           <Title style={{ color: 'white', height: '5vw' }}>
             <div style={{ textAlign: 'center', width: '100%', fontSize: '28px', fontWeight: 'bold' }}><PropertySafetyOutlined /> 收銀員介面</div>
             <div style={{ textAlign: 'center', width: '20%', fontSize: '20px' }}>{me}</div>
-            <Button style={{ textAlign: 'right' }} /*onClick={handleOpenMagagerPwd}*/>登出</Button>
+            <Button style={{ textAlign: 'right' }} onClick={logout}>登出</Button>
           </Title>
         </Header>
         <Content style={{height: '85vh', display: 'flex'}}>
