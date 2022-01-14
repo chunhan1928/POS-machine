@@ -34,6 +34,7 @@ router.post('/update_pwd',(req,res) => {
                 // Success, password match 
                 if(result){
                     console.log(`Pwd match.`);
+                    const saltRounds = 10;
                     bcrypt.genSalt(saltRounds, function(err,salt){
                         bcrypt.hash(new_pwd,salt, async function(err,hash){
                             await myDB.collection("users").findOneAndUpdate({name:username}, {$set:{password: hash}})
@@ -224,7 +225,7 @@ router.get('/revenue', async (req,res) => {
 })
 
 // DONE
-router.post('/create', async  (req,res)=>{
+router.post('/user/create', async  (req,res)=>{
     console.log("Create User");
     const username = req.body.username;
     const password = req.body.password;
@@ -234,24 +235,85 @@ router.post('/create', async  (req,res)=>{
     var myDB = mongoose.connection;
     var query = {name: username};
 
-    let exist = await myDB.collection("users").find(query).toArray();
+    let exist = await myDB.collection("users").findOne(query);
     console.log(exist)
-    if(exist != []){
-        console.log("User existed")
-        res.send({result:false});
-    }
-    else{
+    if(exist == null){
         console.log(`create user ${username}`)
         const saltRounds = 10;
         bcrypt.genSalt(saltRounds, function(err,salt){
             bcrypt.hash(password,salt, async function(err,hash){
                 await myDB.collection("users").insertOne({name:username, password: hash, priviledge: priviledge})
-                res.send({result: true})
+                
+                let usrdata = await myDB.collection("users").find({}).toArray();
+                res.send({result: true , userdata: usrdata});
             })
         })
     }
+    else{
+        console.log("User existed")
+        res.send({result:false, userdata: []});
+    }
 
 })
+
+// DONE
+router.post('/user/delete', async (req,res) => {
+    console.log("Delete User");
+    const username = req.body.username;
+
+    // mongodb
+    var myDB = mongoose.connection;
+    var query = {name: username};
+
+    let exist = await myDB.collection("users").findOne(query);
+    console.log(exist)
+    if(exist == null){
+        console.log(`User ${username} not found`)
+        res.send({result:false, userdata: []});
+    }
+    else{
+        console.log(`User ${username} deleted`)
+        await myDB.collection("users").findOneAndDelete(query);
+
+
+        let usrdata = await myDB.collection("users").find({}).toArray();
+        res.send({result:true, userdata: usrdata});
+    }
+})
+
+// DONE
+router.post('/user/update', async (req,res) =>{
+    console.log("Delete User Priviledge");
+    const username = req.body.username;
+    const priviledge = req.body.priviledge;
+
+    // mongodb
+    var myDB = mongoose.connection;
+    var query = {name: username};
+
+    let exist = await myDB.collection("users").findOne(query);
+    console.log(exist)
+    if(exist == null){
+        console.log(`User ${username} not found`)
+
+        res.send({result:false, userdata: []});
+    }
+    else{
+        console.log(`User ${username} updated`)
+        await myDB.collection("users").findOneAndUpdate(query,{$set:{priviledge: priviledge}});
+
+
+        let usrdata = await myDB.collection("users").find({}).toArray();
+        res.send({result:true, userdata: usrdata});
+    }
+})
+
+// DONE
+router.get('/user', async (req,res) => {
+    let usrdata = await myDB.collection("users").find({}).toArray();
+    res.send({userdata: usrdata});
+})
+   
     
 
 
