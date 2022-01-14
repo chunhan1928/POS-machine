@@ -9,6 +9,7 @@ import ManagerPwd from './ManagerPwd'
 import ManagerEditProduct from './ManagerEditProductMain'
 import ManagerAddProduct from './ManagerAddProductMain'
 import ManagerRevenue from './ManagerRevenue';
+import ManagerAddUser from './ManagerAddUser'
 
 const { Header, Sider, Content, Footer } = Layout;
 
@@ -133,6 +134,7 @@ const Manager = ({ me, data, displayStatus }) => {
                   <Menu.Item key="飲料" icon={<ShoppingOutlined />} >飲料</Menu.Item>
                 </Menu.SubMenu>
                 <Menu.Item key="營收分析" icon={<PieChartOutlined />}>營收分析</Menu.Item>
+                <Menu.Item key="添加用戶" icon={<PieChartOutlined />}>添加用戶</Menu.Item>
               </Menu>
             </Sider>
             <Content style={{ margin: '10px 25px' }} className="site-layout-background">
