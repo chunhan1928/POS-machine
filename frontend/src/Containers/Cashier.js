@@ -155,7 +155,7 @@ const Cashier = ({me, data, logout, displayStatus}) => {
               {/* cart item list */}
               <div style={{height: '65%', width: '100%', overflowY: 'scroll', fontSize: '1.5vmax'}}>
                 {cartItems.map((item, index) => (
-                  <div style={{display:'flex', border: '0.1vmin solid'}} onClick={()=>{HandlerDelete(index)}}>
+                  <div style={{display:'flex', border: '0.1vmin solid', margin: 5}} onClick={()=>{HandlerDelete(index)}}>
                     {/* <h3>{item.name+"\t\t"+item.amount+"份\t\t"+item.price*item.amount+"元"}</h3> */}
                     <p style={{width: "33%"}} >{item.name}</p>
                     <p style={{width: "33%"}}>{item.amount+"份"}</p>
