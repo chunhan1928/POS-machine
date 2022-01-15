@@ -7,15 +7,15 @@ import ManagerEditUserDialog from './ManagerEditUserDialog';
 import { RedoOutlined, PlusSquareOutlined } from "@ant-design/icons";
 
 
-const ManagerAddUser = () => {
+const ManagerAddUser = (me) => {
 
-	const [tableData, setTableData] = useState([]);
+	const [tableData, setTableData] = useState('');
 	const [openAddUser, setOpenAddUser] = useState(false);
 	const [openEditUser, setOpenEditUser] = useState(false);
 	const [recordUserName, setRecordUserName] = useState('');
 
 	const updateData = async () => {
-		const { data: {userdata: userdata} } = await axios.get('/manager/user');
+		const { data: { userdata: userdata } } = await axios.get('/manager/user');
 		console.log(userdata);
 		if (!userdata) {
 			message.error('取得資料錯誤，請再次確認輸入資料');
@@ -44,34 +44,48 @@ const ManagerAddUser = () => {
 		{ title: '用戶權限', dataIndex: 'priviledge', key: 'userPriviledge', },
 		{
 			title: '編輯', dataIndex: 'edit', key: 'edit',
-			render: (text, record) => (
-				<Space size="small">
-					<Button type="primary" onClick={(e) => {
-						e.stopPropagation();
-						handleOpenEditUser(record.name);
-					}}>修改 {record.name}
-					</Button>
-					<Button type="primary" onClick={(e) => {
-						e.stopPropagation();
-						handleDeleteUser(record.name);
-					}}>刪除</Button>
-				</Space>
-			),
+			render: (text, record) => {
+				return (me === record.name) ?
+					(
+						<Space size="small">
+							<Button type="primary" onClick={(e) => {
+								e.stopPropagation();
+								handleOpenEditUser(record.name);
+							}}>修改 {record.name}
+							</Button>
+						</Space>
+					) : (
+						<Space size="small">
+							<Button type="primary" onClick={(e) => {
+								e.stopPropagation();
+								handleOpenEditUser(record.name);
+							}}>修改 {record.name}
+							</Button>
+							<Button type="primary" onClick={(e) => {
+								e.stopPropagation();
+								handleDeleteUser(record.name);
+							}}>刪除</Button>
+						</Space>
+					);
+			}
 		},
 	];
 
 	const handleDeleteUser = async (name) => {
-    var returnData = await axios.post('/manager/user/delete', {
-      username: name,
-    });
-    var { data: { userdata: newData } } = returnData;
-    setTableData(newData);
-  };
+		var returnData = await axios.post('/manager/user/delete', {
+			username: name,
+		});
+		var { data: { userdata: newData } } = returnData;
+		setTableData(newData);
+	};
 
-	// updateData();
+	if (tableData === '') {
+		updateData();
+	}
+
 	return (
 		<>
-			<Button type="primary" icon={<RedoOutlined />} style={{marginRight: 20}} onClick={(e) => {
+			<Button type="primary" icon={<RedoOutlined />} style={{ marginRight: 20 }} onClick={(e) => {
 				e.stopPropagation();
 				updateData();
 			}}> 重新整理

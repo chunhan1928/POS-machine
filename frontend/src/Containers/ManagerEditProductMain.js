@@ -115,7 +115,7 @@ const ManagerEditProduct = ({ data, open, handleCloseEditProduct, setTableData, 
             <TextField
               autoFocus
               margin="dense"
-              label={record.name}
+              label={record.value}
               fullWidth
               variant="standard"
               value={formData[record.index]}

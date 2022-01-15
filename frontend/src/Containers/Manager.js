@@ -118,7 +118,7 @@ const Manager = ({ me, data, displayStatus, logout }) => {
                     setsideTab(e.key);
                     setProductClass('');
                   }
-                  else if (e.key === "添加用戶") {
+                  else if (e.key === "編輯用戶權限") {
                     setsideTab(e.key);
                     setProductClass('');
                   }
@@ -138,7 +138,7 @@ const Manager = ({ me, data, displayStatus, logout }) => {
                   <Menu.Item key="飲料" icon={<ShoppingOutlined />} >飲料</Menu.Item>
                 </Menu.SubMenu>
                 <Menu.Item key="營收分析" icon={<PieChartOutlined />}>營收分析</Menu.Item>
-                <Menu.Item key="添加用戶" icon={<FormOutlined />}>添加用戶</Menu.Item>
+                <Menu.Item key="編輯用戶權限" icon={<FormOutlined />}>編輯用戶權限</Menu.Item>
               </Menu>
             </Sider>
             <Content style={{ margin: '10px 25px' }} className="site-layout-background">
@@ -155,8 +155,8 @@ const Manager = ({ me, data, displayStatus, logout }) => {
                         handleAddEditProduct();
                       }}> 新增商品
                       </Button>
-                      <Table columns={stockColumns} dataSource={showData} size="small" style={{ width: '100%' }} />
-                    </> : (sideTab === "營收分析") ? <ManagerRevenue /> : <ManagerAddUser displayStatus={displayStatus} />
+                      <Table columns={stockColumns} dataSource={showData} size="small" style={{ width: '100%' }} scroll={{ y: 400 }}/>
+                    </> : (sideTab === "營收分析") ? <ManagerRevenue /> : <ManagerAddUser me={me} />
 
                 }
               </div>
