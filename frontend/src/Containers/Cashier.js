@@ -113,7 +113,7 @@ const Cashier = ({me, data, logout, displayStatus}) => {
 
   // make an order
   const HandlerOrder = async () => {
-    if(window.confirm("確定送出訂單？")){
+    if(window.confirm(`總金額是${total}元，請收款後再送出訂單\n確定送出訂單？`)){
       // collect orders
       var orders = []
       for (var i = 0; i < cartItems.length; i++) {
