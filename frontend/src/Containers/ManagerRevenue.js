@@ -13,7 +13,6 @@ const ManagerRevenue = () => {
   const [showOverall, setShowOverall] = useState(0);
   const [from, setFrom] = useState('');
   const [until, setUntil] = useState('');
-  const [showUntil, setShowUntil] = useState('');
 
   const updateRevenue = async () => {
     if (from === '' || until === '') {
@@ -99,20 +98,18 @@ const ManagerRevenue = () => {
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               label="截止日期"
-              value={showUntil}
+              value={until}
               onChange={(v) => {
                 var month = v.getUTCMonth() + 1;
-                var day1 = v.getUTCDate();
-                var day = day1 + 1;
+                var day = v.getUTCDate();
                 var year = v.getUTCFullYear();
-                var newDateString = year + '-' + month + '-' + day;
-                var newDateString1 = year + '-' + month + '-' + day1;
+                var newDateString = year + '-' + month + '-' + day + ' 00:00:00';
+                var newDateString1 = year + '-' + month + '-' + day + ' 23:59:59';
                 var newDate = new Date(newDateString);
                 var newDate1 = new Date(newDateString1);
-                // console.log(newDate);
-                // console.log(newDate1);
-                setUntil(newDate);
-                setShowUntil(newDate1);
+                console.log(newDate);
+                console.log(newDate1);
+                setUntil(newDate1);
               }}
               renderInput={(params) => (
                 <TextField
