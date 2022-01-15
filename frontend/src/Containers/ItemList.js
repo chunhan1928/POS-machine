@@ -1,4 +1,3 @@
-import { fontSize } from "@mui/system";
 import FoodItem from "../Components/FoodItem";
 
 const ItemList = ({data, category, handler}) => {

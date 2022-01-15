@@ -1,21 +1,22 @@
 // 前台
-// TODO: 整形、改密碼功能、某些handler需要pop out
-import { Layout, Button, Menu} from 'antd';
-import Title from '../Components/Title'
-import { PropertySafetyOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useEffect, useState } from 'react';
 import axios from '../api';
+import Title from '../Components/Title'
+import CashierPwd from './CashierPwd'
+import { Layout, Button, Menu} from 'antd';
+import { PropertySafetyOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 
 import ItemList from './ItemList';
 
 const { Header, Content, Footer } = Layout;
 
-const Cashier = ({me, data,logout}) => {
+const Cashier = ({me, data, logout, displayStatus}) => {
   const [stockdata,setStockdata] = useState(data); // all stock data
   const [categories, setCategories] = useState([]); // all categories
   const [curCategory,setCurCategory] = useState("主食"); // current selected category idex on menu
   const [cartItems,setCartItems] = useState([]); // the items in cart
   const [total,setTotal] = useState(0) // total price
+  const [openCashierPwd, setOpenCashierPwd] = useState(false) // the cashier password dialog is no or not
 
   // if stock data is changed, due to possible new item, update category
   useEffect(() => {
@@ -46,7 +47,6 @@ const Cashier = ({me, data,logout}) => {
   }
 
   // add item to cart
-  // TODO: a pop out for order cancel
   const HandlerItem = (name, price, amount) => {
     var updateItem = stockdata.find(obj => {return obj.name === name})
 
@@ -77,7 +77,7 @@ const Cashier = ({me, data,logout}) => {
   }
 
   // delete the order
-  const HandelrClear = () => {
+  const HandlerClear = () => {
     var newdata = stockdata;
     var tmpCart = cartItems;
     for (var i = 0; i < cartItems.length; i++) {
@@ -103,29 +103,39 @@ const Cashier = ({me, data,logout}) => {
     console.log(newlist)
     setCartItems([...newlist])
   }
+  // open and close password dialog
+  const HandlerCloseCashierPwd = () => {
+    setOpenCashierPwd(false);
+  };
+  const HandlerOpenCashierPwd = () => {
+    setOpenCashierPwd(true);
+  };
 
   // make an order
-  // TODO: a pop out to change amount
   const HandlerOrder = async () => {
-    // collect orders
-    var orders = []
-    for (var i = 0; i < cartItems.length; i++) {
-      orders.push({name:cartItems[i].name, amount: cartItems[i].amount});
-    };
-    console.log(orders);
-    // record date and time
-    var currentTime = new Date()
-    var timeString = currentTime.toISOString();
-    console.log(timeString);
-    // send to backend
-    const {data: {result, stockdata}} = await axios.post( '/front/order',{
-        date: timeString,
-        orders: orders,
-    })
-    // see response, set stock data and cart items
-    console.log(result);
-    setStockdata(stockdata);
-    setCartItems([]);
+    if(window.confirm("確定送出訂單？")){
+      // collect orders
+      var orders = []
+      for (var i = 0; i < cartItems.length; i++) {
+        orders.push({name:cartItems[i].name, amount: cartItems[i].amount});
+      };
+      console.log(orders);
+      // record date and time
+      var UTCTime = new Date()
+      var timeZoneOffset = UTCTime.getTimezoneOffset();
+      var localTime = new Date(UTCTime.getTime() - (timeZoneOffset*60*1000))
+      var timeString = localTime.toISOString();
+      console.log(timeString);
+      // send to backend
+      const {data: {result, stockdata}} = await axios.post( '/front/order',{
+          date: timeString,
+          orders: orders,
+      })
+      // see response, set stock data and cart items
+      console.log(result);
+      setStockdata(stockdata);
+      setCartItems([]);
+    }
   }
 
   return (
@@ -135,6 +145,7 @@ const Cashier = ({me, data,logout}) => {
           <Title style={{ color: 'white', height: '5vw' }}>
             <div style={{ textAlign: 'center', width: '100%', fontSize: '28px', fontWeight: 'bold' }}><PropertySafetyOutlined /> 收銀員介面</div>
             <div style={{ textAlign: 'center', width: '20%', fontSize: '20px' }}>{me}</div>
+            <Button style={{ textAlign: 'right' }} onClick={HandlerOpenCashierPwd}>修改密碼</Button>
             <Button style={{ textAlign: 'right' }} onClick={logout}>登出</Button>
           </Title>
         </Header>
@@ -159,7 +170,7 @@ const Cashier = ({me, data,logout}) => {
               {/* delete order and send order */}
               <div style={{height: '20%', display: 'flex'}}>
                 {/* delete order */}
-                <div style={{width: '50%', backgroundColor: '#FD4521'/* red */, fontSize: '5vmin', display: 'flex', alignItems: 'center', justifyContent: 'center'}}  onClick={HandelrClear}>
+                <div style={{width: '50%', backgroundColor: '#FD4521'/* red */, fontSize: '5vmin', display: 'flex', alignItems: 'center', justifyContent: 'center'}}  onClick={HandlerClear}>
                   刪除訂單
                 </div>
                 <div style={{width: '50%', backgroundColor: '#5FAD41'/* green */, fontSize: '5vmin', display: 'flex', alignItems: 'center', justifyContent: 'center'}} onClick={HandlerOrder}>
@@ -190,6 +201,13 @@ const Cashier = ({me, data,logout}) => {
         </Content>
         <Footer style={{ textAlign: 'center', height: '5vh' }}>POS Machine ©2022 Created by NTU CSIE</Footer>
       </Layout>
+      {/* cashier change password */}
+      <CashierPwd
+        me={me}
+        open={openCashierPwd}
+        HandlerCloseCashierPwd={HandlerCloseCashierPwd} 
+        displayStatus={displayStatus}
+      />
     </>
   )
 };

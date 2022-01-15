@@ -104,6 +104,7 @@ function App() {
 						me={me}
 						data={data}
 						logout={logout}
+						displayStatus={displayStatus}
 					/>
 				)
 			}

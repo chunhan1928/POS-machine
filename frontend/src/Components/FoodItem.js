@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Paper } from "@mui/material";
 
 const FoodItem = styled.div`
     display: flex;
