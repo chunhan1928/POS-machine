@@ -45,7 +45,7 @@ const ManagerAddUser = (me) => {
 		{
 			title: '編輯', dataIndex: 'edit', key: 'edit',
 			render: (text, record) => {
-				return (me === record.name) ?
+				return (me.me === record.name) ?
 					(
 						<Space size="small">
 							<Button type="primary" onClick={(e) => {
