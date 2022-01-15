@@ -68,7 +68,7 @@ const ManagerAddUser = () => {
     setTableData(newData);
   };
 
-	updateData();
+	// updateData();
 	return (
 		<>
 			<Button type="primary" icon={<RedoOutlined />} style={{marginRight: 20}} onClick={(e) => {
