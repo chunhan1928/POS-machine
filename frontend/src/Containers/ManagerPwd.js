@@ -1,7 +1,6 @@
 // 管理員介面（修改密碼）
 import axios from '../api';
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 // mui
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -66,7 +65,6 @@ export default function ManagerPwd({ me, open, handleCloseManagerPwd, displaySta
         msg: "舊密碼輸入有誤",
       })
     }
-    console.log("send to backend:", uuidv4(), formData.title, formData.content);
   };
 
   const handleClose = () => {

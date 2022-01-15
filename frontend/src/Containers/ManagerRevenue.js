@@ -13,6 +13,7 @@ const ManagerRevenue = () => {
   const [showOverall, setShowOverall] = useState(0);
   const [from, setFrom] = useState('');
   const [until, setUntil] = useState('');
+  const [showUntil, setShowUntil] = useState('');
 
   const updateRevenue = async () => {
     if (from === '' || until === '') {
@@ -23,7 +24,7 @@ const ManagerRevenue = () => {
       return;
     }
 
-    const { data: { result: result, revenuedata: responseData, total_revenue: overall_profit} } = await axios.get('/manager/revenue', {
+    const { data: { result: result, revenuedata: responseData, total_revenue: overall_profit } } = await axios.get('/manager/revenue', {
       params: {
         from: new Date(from),
         until: new Date(until),
@@ -73,7 +74,15 @@ const ManagerRevenue = () => {
             <DatePicker
               label="開始日期"
               value={from}
-              onChange={(v) => setFrom(v)}
+              onChange={(v) => {
+                console.log(v);
+                var month = v.getUTCMonth() + 1;
+                var day = v.getUTCDate();
+                var year = v.getUTCFullYear();
+                var newDateString = year + '-' + month + '-' + day;
+                var newDate = new Date(newDateString);
+                setFrom(newDate);
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -90,8 +99,21 @@ const ManagerRevenue = () => {
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               label="截止日期"
-              value={until}
-              onChange={(v) => setUntil(v)}
+              value={showUntil}
+              onChange={(v) => {
+                var month = v.getUTCMonth() + 1;
+                var day1 = v.getUTCDate();
+                var day = day1 + 1;
+                var year = v.getUTCFullYear();
+                var newDateString = year + '-' + month + '-' + day;
+                var newDateString1 = year + '-' + month + '-' + day1;
+                var newDate = new Date(newDateString);
+                var newDate1 = new Date(newDateString1);
+                // console.log(newDate);
+                // console.log(newDate1);
+                setUntil(newDate);
+                setShowUntil(newDate1);
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
