@@ -45,10 +45,6 @@ const SignIn = ({ me, setMe, pwd, setPwd, logIn, displayStatus }) => (
 				}}
 
 			> 登入 </Button>
-			<Button
-				type="primary"
-				size="large" style={{ width: 100, margin: 10 }}
-			> 註冊 </Button>
 		</span>
 	</>
 );

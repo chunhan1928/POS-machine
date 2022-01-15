@@ -97,6 +97,7 @@ function App() {
 					<Manager
 						me={me}
 						data={data}
+						logout={logout}
 						displayStatus={displayStatus}
 					/>
 				) : (

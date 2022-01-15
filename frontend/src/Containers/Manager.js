@@ -13,7 +13,7 @@ import ManagerAddUser from './ManagerAddUser'
 
 const { Header, Sider, Content, Footer } = Layout;
 
-const Manager = ({ me, data, displayStatus }) => {
+const Manager = ({ me, data, displayStatus, logout }) => {
   const [sideTab, setsideTab] = useState('庫存狀況');
   const [tableData, setTableData] = useState(data);
   const [showData, setShowData] = useState(data);
@@ -101,7 +101,11 @@ const Manager = ({ me, data, displayStatus }) => {
           <Title style={{ color: 'white', width: '90vw', height: '5vw' }}>
             <div style={{ textAlign: 'center', color: 'white', width: '90%', fontSize: '28px', fontWeight: 'bold' }}><PropertySafetyOutlined /> &nbsp;&nbsp;管理者介面</div>
             <div style={{ textAlign: 'center', width: '10%', fontSize: '20px' }}>{me}</div>
-            <Button style={{ textAlign: 'right' }} onClick={handleOpenMagagerPwd}>修改密碼</Button>
+            <Button style={{ textAlign: 'right', marginRight: 25 }} onClick={handleOpenMagagerPwd}>修改密碼</Button>
+            <Button style={{ textAlign: 'right' }} onClick={(e) => {
+              e.stopPropagation();
+              logout()
+            }}>登出</Button>
           </Title>
           <Layout style={{ height: '80vh' }}>
             <Sider width={200}>
@@ -114,7 +118,7 @@ const Manager = ({ me, data, displayStatus }) => {
                     setsideTab(e.key);
                     setProductClass('');
                   }
-                  else if(e.key === "添加用戶"){
+                  else if (e.key === "添加用戶") {
                     setsideTab(e.key);
                     setProductClass('');
                   }
@@ -152,7 +156,7 @@ const Manager = ({ me, data, displayStatus }) => {
                       }}> 新增商品
                       </Button>
                       <Table columns={stockColumns} dataSource={showData} size="small" style={{ width: '100%' }} />
-                    </> : (sideTab === "營收分析") ? <ManagerRevenue />: <ManagerAddUser displayStatus={displayStatus}/>
+                    </> : (sideTab === "營收分析") ? <ManagerRevenue /> : <ManagerAddUser displayStatus={displayStatus} />
 
                 }
               </div>
