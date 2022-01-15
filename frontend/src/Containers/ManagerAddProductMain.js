@@ -67,7 +67,8 @@ const ManagerAddProduct = ({ open, handleCloseAddProduct, setTableData, updateSh
       data: formData
     });
 
-    let { result: result, data: { stockdata: newData } } = returnData;
+    let { data: { result: result, stockdata: newData } } = returnData;
+    console.log(result);
     if (result == false) {
       message.error("產品新增錯誤");
       return;
