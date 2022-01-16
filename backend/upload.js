@@ -5,8 +5,8 @@ import bcrypt from "bcrypt"
 
 const orderExample = [
     // {date: Date(), name: "", cost: 0, price: 0, amount: 0}
-    {date: new Date("2021-12-02T05:51:04.360Z"), name: "珍奶", cost: 30, price: 60, amount: 2},
-    {date: new Date("2021-12-01T03:32:10.360Z"), name: "燙青菜", cost: 20, price: 30, amount: 1}
+    {date: new Date("2022-01-14T12:51:04.360Z"), name: "珍奶", cost: 30, price: 60, amount: 2},
+    {date: new Date("2022-01-15T13:32:10.360Z"), name: "燙青菜", cost: 20, price: 30, amount: 1}
 ]
 const stockExample = [
     // {name: "", category: "", cost: 0, price: 0, amount: 0}
@@ -24,7 +24,8 @@ const userExample = [
     // {name: "", password: "", priviledge: ""}
     {name: "admin", password: "0000", priviledge: "manager"},
     {name: "clerk1", password: "haha", priviledge: "clerk"},
-    {name: "clerk2", password: "QQ", priviledge: "clerk"}
+    {name: "adam", password: "turing", priviledge: "manager"},
+    {name: "doge", password: "12345", priviledge: "clerk"}
 ]
 
 const dataInit = async () => {
