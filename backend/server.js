@@ -18,7 +18,7 @@ db.once('open', () => {
 });
 
 // create server
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 8000
 app.listen(port, () => {
     console.log
     (`Server listening on: http://localhost:${port}`);

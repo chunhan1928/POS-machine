@@ -2,29 +2,28 @@
 
 第 54 組，由黃嘉宏、周俊廷、陳君翰共同設計與開發
 
-注意：原有 github repo 已被刪除，此為副本，但保留歷史編輯紀錄
+注：原有 github repo 已被刪除，此為副本，但保留歷史編輯紀錄
 
 ## 安裝與執行
 
+本專案使用 Node 14 開發及運行，不保證向上或向下兼容其他版本
+
 1. clone GitHub repository，進入`final/`目錄
 2. 下載套件
-   1. 於`final/`目錄執行`yarn install`
-   2. 於`final/frontend`目錄執行`yarn install`
-   3. 於`final/backend`目錄執行`yarn install`
+   1. 於`final/`目錄執行`npm install`
+   2. 於`final/frontend`目錄執行`npm install`
+   3. 於`final/backend`目錄執行`npm install`
 3. 設定後端資料庫
-
    1. 請在`final/backend`目錄新增`.env`檔案，並可參考`.env.default`操作
-   2. 到 MongoDB Atlas 的網站，利用之前創好的 cluster，在裡面新增一個 database
-
-      ![mongoDB設定](./mongoDB_setting.png)
-
-   3. 於`.env`檔案中，新增一行`MONGO_URL=`，並在其後貼上合理的 MongoDB Atlas 資料庫的連結網址
-   4. 於`.env`檔案中，新增一行`TEST=`。若為`TEST=true`，只要每次重新執行後端，資料庫將被`upload.js`中的測試資料覆蓋，原資料會消失；反之，若為`TEST=false`，則資料庫不受影響
+   2. 在 `.env` 檔案中，加入 mongoDB 的網址
+      1. 若您使用本機 mongo database，請設為`MONGO_URL=mongodb://localhost:27017/pos_machine`
+      2. 若您使用 mongo db Atlas，請設為`MONGO_URL=mongodb+srv://<username>:<password>@<clusterName>.mongodb.net/pos_machine?retryWrites=true&w=majority`
+   3. 於`.env`檔案中，新增一行`TEST=`。若為`TEST=true`，只要每次重新執行後端，資料庫將被`upload.js`中的測試資料覆蓋，原資料會消失；反之，若為`TEST=false`，則資料庫不受影響
 
 4. 執行程式碼
-   1. 執行前端：打開 terminal／cmd，於`final/`目錄執行`yarn start`
-   2. 執行後端：打開 terminal／cmd，於`final/`目錄執行`yarn server`
-   3. 前端將會是  `http://localhost:3000`, 後端則是  `http://localhost:5000`
+   1. 執行前端：打開 terminal／cmd，於`final/`目錄執行`npm start`
+   2. 執行後端：打開 terminal／cmd，於`final/`目錄執行`npm run server`
+   3. 前端將會是  `http://localhost:3000`, 後端則是  `http://localhost:8000`
 
 ## 服務介紹
 
